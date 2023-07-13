@@ -16,6 +16,12 @@ const healthyBtn = document.querySelector("#healthy-btn");
 const deleteBtn = document.querySelector(".btn-danger");
 const tbody = document.getElementById("tbody");
 let breedArr;
+if (getFromStorage("pet_breed") === null) {
+  saveToStorage("pet_breed","[]");
+} else {
+  breedArr = JSON.parse(getFromStorage("pet_breed"));   
+  console.log(breedArr, "breedArr")
+}
 let petArr;
 let data;
 let breedData;
@@ -51,7 +57,10 @@ function isSameId(element) {
 }
 // validate các trường hợp input chưa đặt yêu cầu
 let kiemtra = function () {
-  let check = petArr.some(isSameId);
+  let check;
+  if(petArr.length != 0){
+    check = petArr.some(isSameId);
+  }
   if (idInput.value == "" || nameInput.value == "") {
     alert("Please fill in the form");
     return false;
@@ -129,7 +138,7 @@ submitBtn.addEventListener("click", function () {
     petArr.push(data);
     renderTableData(petArr);
     saveToStorage("pet_array", JSON.stringify(petArr));
-    clearInput();
+    // clearInput();
   } else {
     kiemtra(data);
   }
